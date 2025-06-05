@@ -19,18 +19,7 @@ class GoFishGame
   end
 
   def deal_cards_to_players
-    dealt_cards = []
-    player_count = players.length
-
-    if players.length > STD_PLAYER_AMT
-      (CARDS_DEALT_5 * player_count).times do
-        dealt_cards.push(deal_card_to_game)
-      end
-    else
-      (CARDS_DEALT_7 * player_count).times do
-        dealt_cards.push(deal_card_to_game)
-      end
-    end
+    dealt_cards = deal_cards_to_game
     until dealt_cards.empty?
       players.each do |player|
         player.add_card(dealt_cards.pop)
@@ -38,7 +27,14 @@ class GoFishGame
     end
   end
 
-  def deal_card_to_game
-    deck.deal_card
+  def deal_cards_to_game
+    dealt_cards = []
+
+    if players.length > STD_PLAYER_AMT
+      (CARDS_DEALT_5 * players.length).times { dealt_cards.push(deck.deal_card) }
+    else
+      (CARDS_DEALT_7 * players.length).times { dealt_cards.push(deck.deal_card) }
+    end
+    dealt_cards
   end
 end
