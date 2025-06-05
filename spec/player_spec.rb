@@ -42,17 +42,4 @@ describe Player do
       expect(player.take_cards_of_rank(card4.rank)).to eq([])
     end
   end
-
-  # xit 'takes cards from hand' do
-  #   player.hand = [card1, card2, card3, card4]
-  #   found_cards = player.find_cards_of_rank(card1.rank)
-
-  #   expect(player.take_cards(found_cards)).to eq([card3, card4])
-  #   expect(player.take_cards([card1])).to eq([card2, card3, card4])
-  # end
-
-  # xit 'takes one card from a hand' do
-  #   player.hand = [card1, card2, card3, card4]
-  #   expect(player.take_cards([card1])).to eq([card2, card3, card4])
-  # end
 end
