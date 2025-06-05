@@ -19,20 +19,40 @@ describe Player do
       expect(player.hand[0]).to eq(card1)
     end
   end
-  describe '#find_cards_of_rank' do
-    it 'finds a card of a certain rank from hand' do
+
+  describe '#take_cards_of_rank' do
+    it 'takes cards of a certain rank from hand' do
       player.hand = [card1, card2, card3, card4]
 
-      expect(player.find_cards_of_rank(card1.rank)).to eq([card1, card2])
-      expect(player.find_cards_of_rank('10')).to eq([])
+      expect(player.take_cards_of_rank(card1.rank)).to eq([card1, card2])
+      expect(player.hand).to eq([card3, card4])
+      expect(player.take_cards_of_rank('10')).to eq([])
+    end
+
+    it 'takes a card of certain rank from hand' do
+      player.hand = [card1, card2, card3, card4]
+
+      expect(player.take_cards_of_rank(card3.rank)).to eq([card3])
+      expect(player.hand).to eq([card1, card2, card4])
+    end
+
+    it 'returns an empty array if no ranks match' do
+      player.hand = [card1, card2, card3]
+
+      expect(player.take_cards_of_rank(card4.rank)).to eq([])
     end
   end
 
-  it 'takes cards from hand' do
-    player.hand = [card1, card2, card3, card4]
-    found_cards = player.find_cards_of_rank(card1.rank)
+  # xit 'takes cards from hand' do
+  #   player.hand = [card1, card2, card3, card4]
+  #   found_cards = player.find_cards_of_rank(card1.rank)
 
-    expect(player.take_cards(found_cards)).to eq([card3, card4])
-    # expect(player.take_cards(card1)).to eq([card2, card3, card4])
-  end
+  #   expect(player.take_cards(found_cards)).to eq([card3, card4])
+  #   expect(player.take_cards([card1])).to eq([card2, card3, card4])
+  # end
+
+  # xit 'takes one card from a hand' do
+  #   player.hand = [card1, card2, card3, card4]
+  #   expect(player.take_cards([card1])).to eq([card2, card3, card4])
+  # end
 end

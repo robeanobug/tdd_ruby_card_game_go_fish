@@ -9,13 +9,17 @@ class Player
     hand << card
   end
 
-  def find_cards_of_rank(rank)
-    hand.select do |card|
+  def take_cards_of_rank(rank)
+    found_cards = hand.select do |card|
       card.rank == (rank)
     end
+    delete_cards(found_cards)
+    found_cards
   end
 
-  def take_cards(cards)
+  private
+
+  def delete_cards(cards)
     self.hand = hand - cards
   end
 end
