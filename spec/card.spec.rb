@@ -10,7 +10,12 @@ describe 'Card' do
   end
   
   describe '==' do
-    it 'should return true when 2 cards are equal'
+    it 'should return true when 2 cards are equal' do
+      card1 = Card.new('Ace', 'Spades')
+      card2 = Card.new('Ace', 'Spades')
+
+      expect(card1).to eq(card2)
+    end
   end
   describe 'to_value' do
     it 'should return the value of the card'
