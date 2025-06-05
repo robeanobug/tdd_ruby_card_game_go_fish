@@ -18,4 +18,8 @@ class CardDeck
   def cards_left
     cards.length
   end
+
+  def deal_card
+    cards.pop
+  end
 end
