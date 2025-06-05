@@ -22,4 +22,8 @@ class CardDeck
   def deal_card
     cards.pop
   end
+
+  def shuffle!
+    cards.shuffle!
+  end
 end
