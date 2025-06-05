@@ -4,4 +4,8 @@ class Player
     @name = name
     @hand = []
   end
+
+  def add_card(card)
+    hand << card
+  end
 end
