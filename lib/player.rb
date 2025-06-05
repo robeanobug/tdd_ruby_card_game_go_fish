@@ -10,8 +10,13 @@ class Player
   end
 
   def find_rank(rank)
-    hand.select do |card|
+    found_cards = hand.select do |card|
       card.rank == (rank)
     end
+    # take_cards(found_cards)
+  end
+
+  def take_cards(cards)
+    hand - cards
   end
 end

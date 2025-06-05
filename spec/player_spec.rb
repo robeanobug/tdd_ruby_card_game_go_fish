@@ -27,5 +27,9 @@ describe Player do
       expect(player.find_rank('10')).to eq([])
     end
   end
-  it 'removes a card from hand'
+  it 'takes card from hand' do
+    player.hand = [card1, card2, card3, card4]
+
+    expect(player.take_cards([card1, card2])).to eq([card3, card4])
+  end
 end
