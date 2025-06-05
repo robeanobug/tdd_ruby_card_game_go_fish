@@ -1,14 +1,44 @@
 require_relative 'player'
+require_relative 'card_deck'
+require_relative 'playing_card'
 
 class GoFishGame
-  attr_accessor :players
-  def initialize
+  STD_PLAYER_AMT = 3
+  CARDS_DEALT_7 = 7
+  CARDS_DEALT_5 = 5
+  attr_accessor :players, :deck
+  def initialize(deck = CardDeck.new)
     @players ||= []
+    @deck = deck
   end
 
   def add_players(*names)
     names.each do |name|
       players << Player.new(name)
     end
+  end
+
+  def deal_cards_to_players
+    dealt_cards = []
+    player_count = players.length
+
+    if players.length > STD_PLAYER_AMT
+      (CARDS_DEALT_5 * player_count).times do
+        dealt_cards.push(deal_card_to_game)
+      end
+    else
+      (CARDS_DEALT_7 * player_count).times do
+        dealt_cards.push(deal_card_to_game)
+      end
+    end
+    until dealt_cards.empty?
+      players.each do |player|
+        player.add_card(dealt_cards.pop)
+      end
+    end
+  end
+
+  def deal_card_to_game
+    deck.deal_card
   end
 end
