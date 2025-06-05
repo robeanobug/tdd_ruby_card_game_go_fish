@@ -19,17 +19,20 @@ describe Player do
       expect(player.hand[0]).to eq(card1)
     end
   end
-  describe '#find_rank' do
+  describe '#find_cards_of_rank' do
     it 'finds a card of a certain rank from hand' do
       player.hand = [card1, card2, card3, card4]
 
-      expect(player.find_rank(card1.rank)).to eq([card1, card2])
-      expect(player.find_rank('10')).to eq([])
+      expect(player.find_cards_of_rank(card1.rank)).to eq([card1, card2])
+      expect(player.find_cards_of_rank('10')).to eq([])
     end
   end
-  it 'takes card from hand' do
-    player.hand = [card1, card2, card3, card4]
 
-    expect(player.take_cards([card1, card2])).to eq([card3, card4])
+  it 'takes cards from hand' do
+    player.hand = [card1, card2, card3, card4]
+    found_cards = player.find_cards_of_rank(card1.rank)
+
+    expect(player.take_cards(found_cards)).to eq([card3, card4])
+    # expect(player.take_cards(card1)).to eq([card2, card3, card4])
   end
 end
