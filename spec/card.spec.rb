@@ -18,6 +18,10 @@ describe 'Card' do
     end
   end
   describe 'to_value' do
-    it 'should return the value of the card'
+    it 'should return the value of the card' do
+      card = Card.new('Ace', 'Spades')
+
+      expect(card.to_value).to eq(12)
+    end
   end
 end
