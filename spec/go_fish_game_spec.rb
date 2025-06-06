@@ -8,6 +8,15 @@ describe GoFishGame do
       expect(game).to_not be_nil
     end
 
+    it 'initializes players' do
+      expect(game.players).to eq([])
+    end
+    it 'initializes deck' do
+      expect(game.deck).to_not be_nil
+    end
+    it 'initializes a current_player' do
+      expect(game.current_player).to_not be_nil
+    end
   end
 
   describe '#start' do
@@ -116,8 +125,7 @@ describe GoFishGame do
     context 'stays turn' do
 
       xit 'should collect cards of a certain rank from attacked player and add them to current player' do
-        game.add_players('P1', 'P2')
-        game.deal_cards
+        game.start
         current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('foo')

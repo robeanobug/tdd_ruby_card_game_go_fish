@@ -7,15 +7,17 @@ class GoFishGame
   CARDS_DEALT_7 = 7
   CARDS_DEALT_5 = 5
 
-  attr_accessor :players, :deck
+  attr_accessor :players, :deck, :current_player
 
   def initialize(deck = CardDeck.new)
     @players ||= []
     @deck = deck
+    @current_player = 'No players yet...'
   end
 
   def start
     deal_cards
+    add_players('p1', 'p2') # TEMPORARY CODE
   end
 
   def add_players(*names)
