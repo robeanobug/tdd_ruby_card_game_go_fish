@@ -4,7 +4,7 @@ class CardDeck
   DECK_SIZE = 52
   attr_accessor :cards
   def initialize
-    @cards = build_deck
+    @cards = build_deck.shuffle!
   end
 
   def build_deck

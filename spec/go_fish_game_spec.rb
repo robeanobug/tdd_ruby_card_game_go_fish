@@ -3,6 +3,7 @@ require_relative '../lib/go_fish_game'
 describe GoFishGame do
   let(:game) { GoFishGame.new }
 
+
   it 'initializes a game' do
     game = GoFishGame.new
     expect(game).to_not be_nil
@@ -37,7 +38,51 @@ describe GoFishGame do
     end
   end
 
-  describe '#go_fish' do
-    it 'asks player for a card'
+  describe '#request_rank' do
+    it 'when asking player for a valid rank' do
+      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.deal_cards_to_players
+      current_player = game.players.first
+
+      allow(game).to receive(:gets).and_return('ace')
+
+      expect(game.request_rank(current_player)).to eq('ace')
+    end
+    xit 'asks a player for an invalid rank' do
+      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.deal_cards_to_players
+      current_player = players.first
+
+      allow(game).to receive(:gets).and_return('foo')
+
+      expect(request_rank(current_player)).to eq('Invalid rank')
+    end
+    xit 'when asking player for a valid player' do
+      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.deal_cards_to_players
+      current_player = players.first
+
+      allow(game).to receive(:gets).and_return('P2')
+
+      expect(current_player.request_rank).to eq(game.players[1])
+    end
+    xit 'asks a player for an invalid player' do
+      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.deal_cards_to_players
+      current_player = players.first
+
+      allow(game).to receive(:gets).and_return('foo')
+
+      expect(current_player.request_rank).to eq('Invalid player')
+    end
+  end
+
+  describe '#request_player' do
+    it 'asks a player for a player'
+  end
+
+  describe '#play_round' do
+    it 'goes through round of the game'
+    it 'keeps count of each round'
   end
 end

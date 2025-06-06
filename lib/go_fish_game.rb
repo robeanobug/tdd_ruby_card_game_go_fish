@@ -27,6 +27,14 @@ class GoFishGame
     end
   end
 
+  def request_rank(current_player)
+    puts 'Current Player, enter the rank you would like to collect: '
+    requested_rank = gets.downcase.chomp
+    return requested_rank unless valid_rank?(requested_rank)
+  end
+
+  private
+
   def deal_cards_to_game
     dealt_cards = []
 
@@ -36,5 +44,12 @@ class GoFishGame
       (CARDS_DEALT_7 * players.length).times { dealt_cards.push(deck.deal_card) }
     end
     dealt_cards
+  end
+
+  def valid_rank?(requested_rank)
+    unless PlayingCard::RANKS.include?(requested_rank)
+      return puts 'Invalid rank'
+    end
+    true
   end
 end
