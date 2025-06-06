@@ -36,16 +36,14 @@ class GoFishGame
     end
   end
 
-  def request_rank(current_player)
-    puts 'Current Player, enter the rank you would like to collect: '
-    requested_rank = gets.capitalize.chomp
-    return requested_rank if valid_rank?(requested_rank)
+  def request_rank(current_player, rank)
+    # puts 'Current Player, enter the rank you would like to collect: '
+    return rank if valid_rank?(rank)
   end
 
-  def request_player(current_player)
-    puts 'Current Player, enter the name of the player you would like to collect from: '
-    requested_player_name = gets.downcase.chomp
-    valid_player(requested_player_name)
+  def request_player(current_player, player_name)
+    # puts 'Current Player, enter the name of the player you would like to collect from: '
+    valid_player(player_name)
   end
 
   private

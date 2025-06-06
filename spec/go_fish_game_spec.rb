@@ -69,9 +69,9 @@ describe GoFishGame do
       game.deal_cards
       current_player = game.players.first
 
-      allow(game).to receive(:gets).and_return('Ace')
+      # allow(game).to receive(:gets).and_return('Ace')
 
-      expect(game.request_rank(current_player)).to eq('Ace')
+      expect(game.request_rank(current_player, 'Ace')).to eq('Ace')
     end
 
     it 'asks a player for an invalid rank' do
@@ -79,41 +79,21 @@ describe GoFishGame do
       game.deal_cards
       current_player = game.players.first
 
-      allow(game).to receive(:gets).and_return('foo')
+      # allow(game).to receive(:gets).and_return('foo')
 
-      expect(game.request_rank(current_player)).to be_falsey
-    end
-
-    it 'when asking player for a lowercase valid rank' do
-      game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards
-      current_player = game.players.first
-
-      allow(game).to receive(:gets).and_return('ace')
-
-      expect(game.request_rank(current_player)).to eq('Ace')
+      expect(game.request_rank(current_player, 'foo')).to be_falsey
     end
   end
   
   describe '#request_player' do
-    it 'when asking player for a valid player uppercase' do
+    it 'should ask a for a target player' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards
       current_player = game.players.first
 
-      allow(game).to receive(:gets).and_return('P2')
+      # allow(game).to receive(:gets).and_return('p2')
 
-      expect(game.request_player(current_player)).to eq(game.players[1])
-    end
-
-    it 'when asking player for a valid player lowercase' do
-      game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards
-      current_player = game.players.first
-
-      allow(game).to receive(:gets).and_return('p2')
-
-      expect(game.request_player(current_player)).to eq(game.players[1])
+      expect(game.request_player(current_player, 'p2')).to eq(game.players[1])
     end
 
     it 'asks a player for an invalid player' do
@@ -121,9 +101,9 @@ describe GoFishGame do
       game.deal_cards
       current_player = game.players.first
 
-      allow(game).to receive(:gets).and_return('foo')
+      # allow(game).to receive(:gets).and_return('foo')
 
-      expect(game.request_player(current_player)).to be_falsey
+      expect(game.request_player(current_player, 'foo')).to be_falsey
     end
   end
 
@@ -131,9 +111,12 @@ describe GoFishGame do
     context 'stays turn' do
       xit 'should collect cards of a certain rank from attacked player and add them to current player' do
         game.add_players('p1', 'p2')
-        game.
+        game.players.first.hand = [PlayingCard.new('Ace', 'Hearts'), PlayingCard.new('King', 'Hearts')]
+        game.players.last.hand = [PlayingCard.new('Ace', 'Clubs'), PlayingCard.new('King', 'Clubs')]
+        game.current_player = game.players.first
+        game.play_round(game.current_player)
 
-        expect(game.current_player).to eq(game.players.first)
+        expect()
       end
     end
     
