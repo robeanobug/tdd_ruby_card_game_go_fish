@@ -26,8 +26,11 @@ describe GoFishGame do
       expect(player1.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
     end
 
-    xit 'assigns a current_player' do
-      
+    it 'should assign a current player' do
+      game.add_players('p1', 'p2')
+      game.start
+
+      expect(game.current_player).to eq(game.players.first)
     end
   end
   
@@ -126,14 +129,12 @@ describe GoFishGame do
 
   describe '#play_round' do
     context 'stays turn' do
-
-       it 'should assign a current player' do
+      xit 'should collect cards of a certain rank from attacked player and add them to current player' do
         game.add_players('p1', 'p2')
-        game.start
+        game.
 
         expect(game.current_player).to eq(game.players.first)
       end
-      it 'should collect cards of a certain rank from attacked player and add them to current player'
     end
     
     context 'turn changes' do
