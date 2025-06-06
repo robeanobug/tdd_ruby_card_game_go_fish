@@ -44,18 +44,18 @@ describe GoFishGame do
       game.deal_cards_to_players
       current_player = game.players.first
 
-      allow(game).to receive(:gets).and_return('ace')
+      allow(game).to receive(:gets).and_return('Ace')
 
-      expect(game.request_rank(current_player)).to eq('ace')
+      expect(game.request_rank(current_player)).to eq('Ace')
     end
-    xit 'asks a player for an invalid rank' do
+    it 'asks a player for an invalid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards_to_players
-      current_player = players.first
+      current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('foo')
 
-      expect(request_rank(current_player)).to eq('Invalid rank')
+      expect(game.request_rank(current_player)).to be_falsey
     end
     xit 'when asking player for a valid player' do
       game.add_players('P1', 'P2', 'P3', 'P4')

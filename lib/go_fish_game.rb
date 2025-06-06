@@ -29,8 +29,8 @@ class GoFishGame
 
   def request_rank(current_player)
     puts 'Current Player, enter the rank you would like to collect: '
-    requested_rank = gets.downcase.chomp
-    return requested_rank unless valid_rank?(requested_rank)
+    requested_rank = gets.chomp
+    return requested_rank if valid_rank?(requested_rank)
   end
 
   private
@@ -47,9 +47,7 @@ class GoFishGame
   end
 
   def valid_rank?(requested_rank)
-    unless PlayingCard::RANKS.include?(requested_rank)
-      return puts 'Invalid rank'
-    end
-    true
+    return true if PlayingCard::RANKS.include?(requested_rank)
+    puts 'Invalid rank'
   end
 end
