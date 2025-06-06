@@ -17,7 +17,8 @@ class GoFishGame
 
   def start
     deal_cards
-    add_players('p1', 'p2') # TEMPORARY CODE
+    # add_players('p1', 'p2') # TEMPORARY CODE
+    assign_current_player
   end
 
   def add_players(*names)
@@ -55,6 +56,10 @@ class GoFishGame
     else
       CARDS_DEALT_7
     end
+  end
+
+  def assign_current_player
+    self.current_player = players.first
   end
 
   def valid_rank?(requested_rank)
