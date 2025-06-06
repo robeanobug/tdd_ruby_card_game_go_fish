@@ -29,8 +29,14 @@ class GoFishGame
 
   def request_rank(current_player)
     puts 'Current Player, enter the rank you would like to collect: '
-    requested_rank = gets.chomp
+    requested_rank = gets.capitalize.chomp
     return requested_rank if valid_rank?(requested_rank)
+  end
+
+  def request_player(current_player)
+    puts 'Current Player, enter the name of the player you would like to collect from: '
+    requested_player_name = gets.downcase.chomp
+    valid_player(requested_player_name)
   end
 
   private
@@ -49,5 +55,17 @@ class GoFishGame
   def valid_rank?(requested_rank)
     return true if PlayingCard::RANKS.include?(requested_rank)
     puts 'Invalid rank'
+  end
+
+  def valid_player(player_name)
+    player = find_player(player_name)
+    return player if player
+    puts 'Invalid player'
+  end
+
+  def find_player(player_name)
+    players.find do |player|
+      player.name.downcase == player_name
+    end
   end
 end

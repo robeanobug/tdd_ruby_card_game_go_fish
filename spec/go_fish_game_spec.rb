@@ -48,6 +48,7 @@ describe GoFishGame do
 
       expect(game.request_rank(current_player)).to eq('Ace')
     end
+
     it 'asks a player for an invalid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards_to_players
@@ -57,28 +58,38 @@ describe GoFishGame do
 
       expect(game.request_rank(current_player)).to be_falsey
     end
-    xit 'when asking player for a valid player' do
+
+    it 'when asking player for a lowercase valid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards_to_players
-      current_player = players.first
+      current_player = game.players.first
+
+      allow(game).to receive(:gets).and_return('ace')
+
+      expect(game.request_rank(current_player)).to eq('Ace')
+    end
+  end
+  
+  describe '#request_player' do
+    it 'when asking player for a valid player' do
+      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.deal_cards_to_players
+      current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('P2')
 
-      expect(current_player.request_rank).to eq(game.players[1])
+      expect(game.request_player(current_player)).to eq(game.players[1])
     end
-    xit 'asks a player for an invalid player' do
+
+    it 'asks a player for an invalid player' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards_to_players
-      current_player = players.first
+      current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('foo')
 
-      expect(current_player.request_rank).to eq('Invalid player')
+      expect(game.request_player(current_player)).to be_falsey
     end
-  end
-
-  describe '#request_player' do
-    it 'asks a player for a player'
   end
 
   describe '#play_round' do
