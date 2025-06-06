@@ -1,14 +1,14 @@
 require_relative '../lib/go_fish_game'
 
 describe GoFishGame do
-  let(:game) { GoFishGame.new }
+  let (:p1) { Player.new('p1') }
+  let (:p2) { Player.new('p2') }
+
+  let(:game) { GoFishGame.new([p1, p2]) }
 
   describe '#initialize' do
     it 'initializes a game' do
       expect(game).to_not be_nil
-    end
-    it 'initializes players' do
-      expect(game.players).to eq([])
     end
     it 'initializes deck' do
       expect(game.deck).to_not be_nil
@@ -20,10 +20,10 @@ describe GoFishGame do
 
   describe '#start' do
     it 'deals cards to players' do
-      game.add_players('P1', 'P2')
-      player1 = game.players.first
+      # game.add_players('P1', 'P2')
+      # player1 = game.players.first
       game.start
-      expect(player1.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
+      expect(p1.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
     end
 
     it 'should assign a current player' do
@@ -37,13 +37,12 @@ describe GoFishGame do
   describe '#add_players' do
     it 'adds 2 players to players' do
       player_count = 2
-      game.add_players('P1', 'P2')
       expect(game.players.length).to eq(player_count)
     end
 
     it 'adds 4 players to players' do
       player_count = 4
-      game.add_players('P1', 'P2', 'P3', 'P4')
+      game.add_players('P3', 'P4')
       expect(game.players.length).to eq(player_count)
     end
   end
@@ -69,8 +68,6 @@ describe GoFishGame do
       game.deal_cards
       current_player = game.players.first
 
-      # allow(game).to receive(:gets).and_return('Ace')
-
       expect(game.request_rank(current_player, 'Ace')).to eq('Ace')
     end
 
@@ -78,8 +75,6 @@ describe GoFishGame do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards
       current_player = game.players.first
-
-      # allow(game).to receive(:gets).and_return('foo')
 
       expect(game.request_rank(current_player, 'foo')).to be_falsey
     end
@@ -91,8 +86,6 @@ describe GoFishGame do
       game.deal_cards
       current_player = game.players.first
 
-      # allow(game).to receive(:gets).and_return('p2')
-
       expect(game.request_player(current_player, 'p2')).to eq(game.players[1])
     end
 
@@ -100,8 +93,6 @@ describe GoFishGame do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards
       current_player = game.players.first
-
-      # allow(game).to receive(:gets).and_return('foo')
 
       expect(game.request_player(current_player, 'foo')).to be_falsey
     end
@@ -114,9 +105,10 @@ describe GoFishGame do
         game.players.first.hand = [PlayingCard.new('Ace', 'Hearts'), PlayingCard.new('King', 'Hearts')]
         game.players.last.hand = [PlayingCard.new('Ace', 'Clubs'), PlayingCard.new('King', 'Clubs')]
         game.current_player = game.players.first
-        game.play_round(game.current_player)
+        game.play_round(game.players.last, 'Ace')
 
-        expect()
+        expect(game.players.first.hand).to eq([PlayingCard.new('Ace', 'Hearts'), PlayingCard.new('King', 'Hearts'), PlayingCard.new('Ace', 'Clubs')])
+        expect(game.players.last.hand).to eq([PlayingCard.new('King', 'Clubs')])
       end
     end
     

@@ -9,16 +9,21 @@ class GoFishGame
 
   attr_accessor :players, :deck, :current_player
 
-  def initialize(deck = CardDeck.new)
-    @players ||= []
+  def initialize(deck = CardDeck.new, players)
+    @players = players
     @deck = deck
     @current_player = 'No players yet...'
   end
 
   def start
     deal_cards
-    # add_players('p1', 'p2') # TEMPORARY CODE
     assign_current_player
+  end
+
+  def play_round(target, request)
+    player = current_player
+    request_rank(player, request)
+    request_player(player, target)
   end
 
   def add_players(*names)
@@ -71,7 +76,7 @@ class GoFishGame
     puts 'Invalid player'
   end
 
-  def find_player(player_name)
+  def find_player(player_name) # to add in the runner class
     players.find do |player|
       player.name.downcase == player_name
     end
