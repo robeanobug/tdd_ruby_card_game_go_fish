@@ -14,6 +14,10 @@ class GoFishGame
     @deck = deck
   end
 
+  def start
+    deal_cards
+  end
+
   def add_players(*names)
     names.each do |name|
       players << Player.new(name)

@@ -3,11 +3,22 @@ require_relative '../lib/go_fish_game'
 describe GoFishGame do
   let(:game) { GoFishGame.new }
 
-  it 'initializes a game' do
-    game = GoFishGame.new
-    expect(game).to_not be_nil
+  describe '#initialize' do
+    it 'initializes a game' do
+      expect(game).to_not be_nil
+    end
+
   end
 
+  describe '#start' do
+    it 'deals cards to players' do
+      game.add_players('P1', 'P2')
+      player1 = game.players.first
+      game.start
+      expect(player1.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
+    end
+  end
+  
   describe '#add_players' do
     it 'adds 2 players to players' do
       player_count = 2
@@ -101,13 +112,18 @@ describe GoFishGame do
     end
   end
 
-  describe '#collect_cards' do
-    it 'should collect cards of a certain rank from attacked player and add them to current player'
-  end
-
   describe '#play_round' do
     context 'stays turn' do
-      
+
+      xit 'should collect cards of a certain rank from attacked player and add them to current player' do
+        game.add_players('P1', 'P2')
+        game.deal_cards
+        current_player = game.players.first
+
+      allow(game).to receive(:gets).and_return('foo')
+        
+        expect()
+      end
     end
     
     context 'turn changes' do
@@ -115,11 +131,14 @@ describe GoFishGame do
     end
 
     it 'should collect cards of a certain rank from attacked player and add them to current player'
-    it 'should collect cards of a certain rank from attacked player and add them to current player'
     it 'should update current_player to player 2 if starting with player 1'
   end
 
   describe '#update_current_player' do
-    xit 'should update current_player to player 2 if starting with player 1'
+    it 'should update current_player to player 2 if starting with player 1'
+  end
+
+  describe '#collect_cards' do
+    it 'should collect cards of a certain rank from attacked player and add them to current player'
   end
 end
