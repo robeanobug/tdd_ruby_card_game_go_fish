@@ -99,16 +99,21 @@ describe GoFishGame do
   end
 
   describe '#play_round' do
+    let(:ace_hearts) { PlayingCard.new('Ace', 'Hearts') }
+    let(:king_hearts) { PlayingCard.new('King', 'Hearts') }
+    let(:ace_clubs) { PlayingCard.new('Ace', 'Clubs') }
+    let(:king_clubs) { PlayingCard.new('King', 'Clubs')}
+
     context 'stays turn' do
-      xit 'should collect cards of a certain rank from attacked player and add them to current player' do
-        game.add_players('p1', 'p2')
-        game.players.first.hand = [PlayingCard.new('Ace', 'Hearts'), PlayingCard.new('King', 'Hearts')]
-        game.players.last.hand = [PlayingCard.new('Ace', 'Clubs'), PlayingCard.new('King', 'Clubs')]
-        game.current_player = game.players.first
+      it 'should collect cards of a certain rank from attacked player and add them to current player' do
+
+        game.start
+        game.players.first.hand = [ace_hearts, king_hearts]
+        game.players.last.hand = [ace_clubs, king_clubs]
         game.play_round(game.players.last, 'Ace')
 
-        expect(game.players.first.hand).to eq([PlayingCard.new('Ace', 'Hearts'), PlayingCard.new('King', 'Hearts'), PlayingCard.new('Ace', 'Clubs')])
-        expect(game.players.last.hand).to eq([PlayingCard.new('King', 'Clubs')])
+        expect(game.players.first.hand).to eq([ace_hearts, king_hearts, ace_clubs])
+        expect(game.players.last.hand).to eq([king_clubs])
       end
     end
     

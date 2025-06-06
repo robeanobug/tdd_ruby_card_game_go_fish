@@ -12,18 +12,18 @@ class GoFishGame
   def initialize(deck = CardDeck.new, players)
     @players = players
     @deck = deck
-    @current_player = 'No players yet...'
+    @current_player = players.first
   end
 
   def start
     deal_cards
-    assign_current_player
   end
 
   def play_round(target, request)
-    player = current_player
-    request_rank(player, request)
-    request_player(player, target)
+    request_rank(current_player, request)
+    request_player(current_player, target)
+    requested_cards = target.take_cards_of_rank(request)
+    requested_cards.each { |requested_card| current_player.add_card(requested_card) }
   end
 
   def add_players(*names)
@@ -59,10 +59,6 @@ class GoFishGame
     else
       CARDS_DEALT_7
     end
-  end
-
-  def assign_current_player
-    self.current_player = players.first
   end
 
   def valid_rank?(requested_rank)
