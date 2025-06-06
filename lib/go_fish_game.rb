@@ -6,7 +6,9 @@ class GoFishGame
   STD_PLAYER_AMT = 3
   CARDS_DEALT_7 = 7
   CARDS_DEALT_5 = 5
+
   attr_accessor :players, :deck
+  
   def initialize(deck = CardDeck.new)
     @players ||= []
     @deck = deck
