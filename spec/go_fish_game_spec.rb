@@ -22,17 +22,17 @@ describe GoFishGame do
     end
   end
 
-  describe '#deal_cards_to_players' do
+  describe '#deal_cards' do
     it 'deals 7 cards to 2 players' do
       game.players = [Player.new('P1'), Player.new('P2')]
-      game.deal_cards_to_players
+      game.deal_cards
       
       expect(game.players.first.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
     end
 
     it 'deals 5 cards to 4 players' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       expect(game.players.first.hand.length).to eq(GoFishGame::CARDS_DEALT_5)
     end
   end
@@ -40,7 +40,7 @@ describe GoFishGame do
   describe '#request_rank' do
     it 'when asking player for a valid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('Ace')
@@ -50,7 +50,7 @@ describe GoFishGame do
 
     it 'asks a player for an invalid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('foo')
@@ -60,7 +60,7 @@ describe GoFishGame do
 
     it 'when asking player for a lowercase valid rank' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('ace')
@@ -72,7 +72,7 @@ describe GoFishGame do
   describe '#request_player' do
     it 'when asking player for a valid player uppercase' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('P2')
@@ -82,7 +82,7 @@ describe GoFishGame do
 
     it 'when asking player for a valid player lowercase' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('p2')
@@ -92,7 +92,7 @@ describe GoFishGame do
 
     it 'asks a player for an invalid player' do
       game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards_to_players
+      game.deal_cards
       current_player = game.players.first
 
       allow(game).to receive(:gets).and_return('foo')
@@ -101,10 +101,25 @@ describe GoFishGame do
     end
   end
 
-  describe '#play_round' do
-    it 'goes through round of the game'
-    it 'keeps count of each round'
+  describe '#collect_cards' do
+    it 'should collect cards of a certain rank from attacked player and add them to current player'
   end
 
-  describe '#update_current_player'
+  describe '#play_round' do
+    context 'stays turn' do
+      
+    end
+    
+    context 'turn changes' do
+
+    end
+
+    it 'should collect cards of a certain rank from attacked player and add them to current player'
+    it 'should collect cards of a certain rank from attacked player and add them to current player'
+    it 'should update current_player to player 2 if starting with player 1'
+  end
+
+  describe '#update_current_player' do
+    xit 'should update current_player to player 2 if starting with player 1'
+  end
 end

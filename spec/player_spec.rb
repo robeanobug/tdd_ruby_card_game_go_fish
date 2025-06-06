@@ -42,4 +42,8 @@ describe Player do
       expect(player.take_cards_of_rank(card4.rank)).to eq([])
     end
   end
+
+  describe '#check_books' do
+    it 'should return a book if player.hand has 4 of a kind'
+  end
 end

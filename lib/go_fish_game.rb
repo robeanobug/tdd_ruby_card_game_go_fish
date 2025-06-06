@@ -8,7 +8,7 @@ class GoFishGame
   CARDS_DEALT_5 = 5
 
   attr_accessor :players, :deck
-  
+
   def initialize(deck = CardDeck.new)
     @players ||= []
     @deck = deck
@@ -20,11 +20,11 @@ class GoFishGame
     end
   end
 
-  def deal_cards_to_players
-    dealt_cards = deal_cards_to_game
-    until dealt_cards.empty?
+  def deal_cards
+    how_many_cards_to_deal.times do
       players.each do |player|
-        player.add_card(dealt_cards.pop)
+        card = deck.deal_card
+        player.add_card(card)
       end
     end
   end
@@ -43,15 +43,12 @@ class GoFishGame
 
   private
 
-  def deal_cards_to_game
-    dealt_cards = []
-
+  def how_many_cards_to_deal
     if players.length > STD_PLAYER_AMT
-      (CARDS_DEALT_5 * players.length).times { dealt_cards.push(deck.deal_card) }
+      CARDS_DEALT_5
     else
-      (CARDS_DEALT_7 * players.length).times { dealt_cards.push(deck.deal_card) }
+      CARDS_DEALT_7
     end
-    dealt_cards
   end
 
   def valid_rank?(requested_rank)
