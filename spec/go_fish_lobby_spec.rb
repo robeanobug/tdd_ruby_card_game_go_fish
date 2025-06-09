@@ -54,10 +54,10 @@ describe GoFishLobby do
     expect(client1.capture_output).to match /your cards/i
   end
 
-  xit 'should get a target player from the current player' do
+  it 'should get a target player from the current player' do
     @server.run_game
 
-    expect()
+    expect(client1.capture_output).to match 
   end
   it 'should select a rank'
   it 'should validate inputs'

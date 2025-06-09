@@ -14,7 +14,7 @@ class GoFishSocketServer
   end
 
   def accept_new_client(player_name = 'Random Player')
-    client = @server.accept_nonblock
+    client = server.accept_nonblock
     players << Player.new(player_name, client)
     clients << client
     client.puts 'Welcome to Go Fish! Waiting for players to join...'
@@ -36,10 +36,10 @@ class GoFishSocketServer
   end
 
   def start
-    @server = TCPServer.new(port_number)
+    self.server = TCPServer.new(port_number)
   end
 
   def stop
-    @server.close if @server
+    server.close if server
   end
 end
