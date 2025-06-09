@@ -12,15 +12,11 @@ class GoFishLobby
   end
 
   def play_round
-    # current_client.socket.puts 'else'
-    # binding.irb
-    # display_hand
-    current_client.puts "Your cards"
+    display_hand
   end
 
   def display_hand
-    puts current_client.socket.inspect
-    # current_client.socket.puts "Your cards are: #{current_player.hand}"
+    current_client.puts "Your cards are: #{current_player.hand}"
   end
 
   def player_to_client
@@ -36,7 +32,6 @@ class GoFishLobby
   end
 
   private
-
 
   def current_player
     game.current_player
