@@ -10,4 +10,8 @@ class GoFishLobby
     @host = host
     @players = [host]
   end
+
+  def add_player(player)
+    players << player
+  end
 end

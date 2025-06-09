@@ -9,7 +9,20 @@ describe GoFishLobby do
     expect(lobby.players).to be_a(Array)
   end
 
-  it 'starts the game when the host is ready and there are at least 2 players' do
+  it 'should add a player' do
+    host = Player.new('p1')
+    player2 = Player.new('p2')
+    lobby = GoFishLobby.new(host)
+    lobby.add_player(player2)
+    players_length = 2
+
+    expect(lobby.players.length).to eq(players_length)
+  end
+
+  xit 'should start the game when the host is ready and there are at least 2 players' do
+    host = Player.new('p1')
+    lobby = GoFishLobby.new(host)
+
     
   end
 
@@ -21,7 +34,7 @@ describe GoFishLobby do
 
     expect(@server.games.count).to eq(game_count)
   end
-  
+
   xit 'should not start game until Player 1 is ready' do # should this go in the socket server runner
     @clients.push(client1)
     @server.accept_new_client('Player 1')
