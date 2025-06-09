@@ -18,13 +18,10 @@ class GoFishSocketServer
 
   def accept_new_client(player_name = 'Random Player')
     client = @server.accept_nonblock
-    player = Player.new(player_name)
-    players << player
+    players << Player.new(player_name)
     clients << client
     client.puts 'Welcome to Go Fish! You are in the waiting lobby. Waiting for players to join...'
-    if players.length == 1
-      create_lobby(players[0])
-    end
+    create_lobby(players[0]) if players.length == 1
   rescue IO::WaitReadable, Errno::EINTR
     puts 'No client to accept'
   end
