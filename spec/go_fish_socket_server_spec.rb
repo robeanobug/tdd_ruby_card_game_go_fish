@@ -1,0 +1,1 @@
+require_relative '../lib/go_fish_socket_server'
