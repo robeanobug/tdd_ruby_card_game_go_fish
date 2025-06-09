@@ -1,1 +1,75 @@
+require 'socket'
 require_relative '../lib/go_fish_socket_server'
+
+class MockGoFishSocketClient
+  attr_reader :socket
+  attr_reader :output
+
+  def initialize(port)
+    @socket = TCPSocket.new('localhost', port)
+  end
+
+  def provide_input(text)
+    @socket.puts(text)
+  end
+
+  def capture_output(delay=0.1)
+    sleep(delay)
+    @output = @socket.read_nonblock(200_000)
+  rescue IO::WaitReadable
+    @output = ""
+  end
+
+  def close
+    @socket.close if @socket
+  end
+end
+
+describe GoFishSocketServer do
+  before(:each) do
+    @clients = []
+    @server = GoFishSocketServer.new
+    @server.start
+    sleep 0.1
+  end
+
+  after(:each) do
+    @server.stop
+    @clients.each do |client|
+      client.close
+    end
+  end
+
+  let(:client1) { MockGoFishSocketClient.new(@server.port_number) }
+  let(:client2) { MockGoFishSocketClient.new(@server.port_number) }
+
+  it 'is not listening on a port before it is started' do
+    @server.stop
+    expect { MockGoFishSocketClient.new(@server.port_number)}.to raise_error(Errno::ECONNREFUSED)
+  end
+
+  xit 'is listening on a port after it is started' do
+    expect { MockGoFishSocketClient.new(@server.port_number)}.to eq(3336)
+  end
+
+  it 'accepts a new client' do
+    player_count = 1
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+    expect(@server.players.count).to eq(player_count)
+  end
+
+  it 'accepts another new client' do
+    player_count = 2
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+    @clients.push(client2)
+    @server.accept_new_client('Player2')
+
+    expect(@server.players.count).to eq(player_count)
+  end
+
+  it 'starts a game if player 1 says ready'
+  it 'sends clients a welcome message'
+  it 'sends all clients a message when the game starts'
+end
