@@ -23,15 +23,8 @@ class GoFishGame
     request_rank(current_player, request)
     target = request_player(current_player, target_name)
     requested_cards = target.take_cards_of_rank(request)
-    unless requested_cards.empty?
-      requested_cards.each { |requested_card| current_player.add_card(requested_card) }
-    end
-    if requested_cards.empty?
-      fished_card = go_fish
-      current_player.add_card(fished_card)
-      return change_turns unless fished_card.rank == request
-    end
-    return change_turns unless requested_cards.empty?
+    requested_cards.each { |requested_card| current_player.add_card(requested_card) } unless requested_cards.empty?
+    go_fish(request) if requested_cards.empty?
   end
 
   def change_turns
@@ -39,8 +32,10 @@ class GoFishGame
     self.current_player = players[player_index]
   end
 
-  def go_fish
-    deck.deal_card
+  def go_fish(request)
+    fished_card = deck.deal_card
+    current_player.add_card(fished_card)
+    change_turns unless fished_card.rank == request
   end
 
   def add_players(*names)

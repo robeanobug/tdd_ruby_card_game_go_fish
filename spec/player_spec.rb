@@ -21,6 +21,13 @@ describe Player do
       player.add_card(two_spades)
       expect(player.hand[0]).to eq(two_spades)
     end
+
+    it 'adds multiple cards to a hand' do
+      hand_length = 4
+      player.add_card([two_spades, two_hearts, two_diamonds, two_clubs])
+
+      expect(player.hand.length).to eq(hand_length)
+    end
   end
 
   describe '#take_cards_of_rank' do
@@ -46,22 +53,27 @@ describe Player do
     end
   end
 
-  describe '#book?' do
+  describe '#find_book' do
     it 'should return true if player.hand has 4 of a kind' do
       player.hand = [two_spades, two_hearts, five_spades, three_clubs, two_diamonds, two_clubs]
   
-      expect(player.book?).to be_truthy
+      expect(player.find_book).to be_truthy
     end
     it 'should return false if player.hand does not have 4 of a kind' do
       player.hand = [two_spades, five_spades, three_clubs, two_diamonds, two_clubs]
   
-      expect(player.book?).to be_falsey
+      expect(player.find_book).to be_falsey
     end
   end
   
   describe '#add_book' do
     it 'should add a book to books and remove from the hand of player' do
-      
+      player.hand = [two_spades, two_hearts, five_spades, three_clubs, two_diamonds, two_clubs]
+      book = player.find_book
+      player.add_book(book)
+
+      expect(player.books).to match_array([[two_spades, two_hearts, two_diamonds, two_clubs]])
+      expect(player.hand).to match_array([five_spades, three_clubs])
     end
   end
 end

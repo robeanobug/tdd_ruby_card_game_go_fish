@@ -7,8 +7,12 @@ class Player
     @books = []
   end
 
-  def add_card(card)
-    hand << card
+  def add_card(cards)
+    if cards.is_a?(PlayingCard)
+      hand << cards
+    else
+      cards.each { |card| hand << card }
+    end
   end
 
   def take_cards_of_rank(rank)
@@ -19,12 +23,17 @@ class Player
     found_cards
   end
 
-  def book?
+  def find_book
     grouped_ranks = hand.group_by { |hand| hand.rank }
     grouped_ranks.each do |rank, cards|
-      return true if cards.length == BOOK_SIZE
+      return cards if cards.length == BOOK_SIZE
     end
     false
+  end
+
+  def add_book(book)
+    # remove book from hand
+    books << book
   end
 
   private
