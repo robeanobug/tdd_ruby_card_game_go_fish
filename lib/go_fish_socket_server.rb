@@ -25,6 +25,14 @@ class GoFishSocketServer
     puts 'No client to accept'
   end
 
+  def create_game_if_possible
+    if players.count > 1
+      game = GoFishGame.new(players)
+      game.start
+      games << game
+    end
+  end
+
   def start
     @server = TCPServer.new(port_number)
   end

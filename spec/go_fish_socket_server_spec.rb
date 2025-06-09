@@ -64,12 +64,31 @@ describe GoFishSocketServer do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     @clients.push(client2)
-    @server.accept_new_client('Player2')
+    @server.accept_new_client('Player 2')
 
     expect(@server.players.count).to eq(player_count)
   end
 
-  it 'starts a game if player 1 says ready'
+  it 'should start a game if player 1 says ready and at least 2 players' do
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+    @clients.push(client2)
+    @server.accept_new_client('Player2')
+    @server.create_game_if_possible
+    game_count = 1
+
+    expect(@server.games.count).to eq(game_count)
+  end
+
+  it 'should not start a game if less than 2 players' do
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+    @server.create_game_if_possible
+    game_count = 0
+
+    expect(@server.games.count).to eq(game_count)
+  end
+
   it 'sends clients a welcome message'
   it 'sends all clients a message when the game starts'
 end
