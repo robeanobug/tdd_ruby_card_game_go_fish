@@ -20,11 +20,12 @@ class GoFishGame
   end
 
   def play_round(target_name, request)
-    request_rank(current_player, request)
     target = request_player(current_player, target_name)
     requested_cards = target.take_cards_of_rank(request)
     requested_cards.each { |requested_card| current_player.add_card(requested_card) } unless requested_cards.empty?
     go_fish(request) if requested_cards.empty?
+    book = current_player.find_book
+    current_player.add_book(book) if book
   end
 
   def change_turns

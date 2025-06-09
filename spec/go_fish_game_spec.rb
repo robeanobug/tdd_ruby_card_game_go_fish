@@ -134,7 +134,7 @@ describe GoFishGame do
 
         expect(game.players.first.hand).to match_array([king_hearts])
         expect(game.players.last.hand).to match_array([king_clubs])
-        expect(game.players.first.books).to eq([ace_spades, ace_hearts, ace_diamonds, ace_clubs])
+        expect(game.players.first.books.first).to match_array([ace_spades, ace_hearts, ace_diamonds, ace_clubs])
       end
 
       it 'should request card rank, target does not have it, card is fished and completes a book, there are not deck_size/books_size books'

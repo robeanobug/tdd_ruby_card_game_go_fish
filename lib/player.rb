@@ -32,7 +32,7 @@ class Player
   end
 
   def add_book(book)
-    # remove book from hand
+    delete_cards(book)
     books << book
   end
 
