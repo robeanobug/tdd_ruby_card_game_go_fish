@@ -9,9 +9,11 @@ describe GoFishGame do
     it 'initializes a game' do
       expect(game).to_not be_nil
     end
+
     it 'initializes deck' do
       expect(game.deck).to_not be_nil
     end
+    
     it 'initializes a current_player' do
       expect(game.current_player).to_not be_nil
     end
@@ -104,9 +106,13 @@ describe GoFishGame do
     let(:ace_diamonds) { PlayingCard.new('Ace', 'Diamonds') }
     let(:ace_spades) { PlayingCard.new('Ace', 'Spades') }
 
+    before(:example) do
+      game.start
+      game.deck.cards = CardDeck.new.build_deck
+    end
+
     context 'stays turn' do
       it 'should request card rank, target has it, does not complete a book' do
-        game.start
         game.players.first.hand = [ace_hearts, king_hearts]
         game.players.last.hand = [ace_clubs, king_clubs]
         game.play_round('p2', 'Ace')
@@ -115,9 +121,8 @@ describe GoFishGame do
         expect(game.players.last.hand).to match_array([king_clubs])
       end
 
+
       it 'should request card rank, target does not have it, card is fished and is not a book' do
-        game.start
-        game.deck.cards = CardDeck.new.build_deck
         game.players.first.hand = [ace_hearts, king_hearts]
         game.players.last.hand = [king_clubs]
         game.play_round('p2', 'Ace')
@@ -127,7 +132,6 @@ describe GoFishGame do
       end
 
       it 'should request card rank, target has it, completes a book, there are not deck_size/books_size books' do
-        game.start
         game.players.first.hand = [ace_hearts, king_hearts, ace_spades]
         game.players.last.hand = [ace_clubs, king_clubs, ace_diamonds]
         game.play_round('p2', 'Ace')
@@ -140,11 +144,9 @@ describe GoFishGame do
       it 'should request card rank, target does not have it, card is fished and completes a book, there are not deck_size/books_size books'
       it 'should request card rank, target does not have it, card is fished, completes a book, there are deck_size/books_size books'
     end
-    
+
     context 'turn changes' do
       it 'should request card rank, target does not have it, card is not fished' do
-        game.start
-        game.deck.cards = CardDeck.new.build_deck
         game.players.first.hand = [ace_hearts, king_hearts]
         game.players.last.hand = [king_clubs]
         game.play_round('p2', '10')
