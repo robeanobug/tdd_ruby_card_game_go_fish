@@ -28,23 +28,25 @@ describe GoFishLobby do
     
     @server.create_game_if_possible
   end
+
+  let(:lobby) { @server.lobby }
   
   xit 'should initialize with a game' do
-
     expect(lobby.game).to_not be_nil
     expect(lobby.players).to_not be_nil
   end
 
   xit 'should create a hash that associates player with client' do
-    lobby = @server.lobby
-    # client2.capture_output
-    # client1.capture_output
-    # binding.irb
-    expect(lobby.player_to_client[lobby.players.first]).to eq(client1)
+    # (1) this test is comparing the client actually created in the server and the mock client so it will never work
+    # 
+    # (2) this test is also broken because it creates a block somehow idk
+    player_client_hash = lobby.player_to_client
+    player1 = lobby.players.first
+    binding.irb
+    expect(player_client_hash[player1]).to eq(client1)
   end
 
   it 'should inform player of hand' do
-    lobby = @server.lobby
     client2.capture_output
     client1.capture_output
     lobby.play_round
@@ -55,7 +57,6 @@ describe GoFishLobby do
   xit 'should get a target player from the current player' do
     @server.run_game
 
-    # client1.provide_input
     expect()
   end
   it 'should select a rank'

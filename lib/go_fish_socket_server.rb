@@ -17,7 +17,7 @@ class GoFishSocketServer
     client = @server.accept_nonblock
     players << Player.new(player_name, client)
     clients << client
-    client.puts 'Welcome to Go Fish! You are in the waiting lobby. Waiting for players to join...'
+    client.puts 'Welcome to Go Fish! Waiting for players to join...'
   rescue IO::WaitReadable, Errno::EINTR
     puts 'No client to accept'
   end

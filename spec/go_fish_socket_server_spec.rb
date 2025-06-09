@@ -63,7 +63,7 @@ describe GoFishSocketServer do
 
     expect(@server.lobby).to_not be_nil
   end
-  
+
   it 'should start a game if at least 2 players' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
