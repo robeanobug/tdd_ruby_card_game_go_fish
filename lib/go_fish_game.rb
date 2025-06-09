@@ -19,11 +19,30 @@ class GoFishGame
     deal_cards
   end
 
-  def play_round(target, request)
+  def play_round(target_name, request)
     request_rank(current_player, request)
-    request_player(current_player, target)
+    target = request_player(current_player, target_name)
     requested_cards = target.take_cards_of_rank(request)
-    requested_cards.each { |requested_card| current_player.add_card(requested_card) }
+    p "requested cards before adding to current player: #{requested_cards}"
+    unless requested_cards.empty?
+      requested_cards.each { |requested_card| current_player.add_card(requested_card) }
+    end
+    p "requested cards after adding to current player: #{requested_cards}"
+    if requested_cards.empty?
+      fished_card = go_fish
+      current_player.add_card(fished_card)
+      return change_turns unless fished_card.rank == request
+    end
+    return change_turns unless requested_cards.empty?
+  end
+
+  def change_turns
+    player_index = (players.find_index(current_player) + 1) % players.length
+    self.current_player = players[player_index]
+  end
+
+  def go_fish
+    deck.deal_card
   end
 
   def add_players(*names)

@@ -3,7 +3,6 @@ require_relative '../lib/go_fish_game'
 describe GoFishGame do
   let (:p1) { Player.new('p1') }
   let (:p2) { Player.new('p2') }
-
   let(:game) { GoFishGame.new([p1, p2]) }
 
   describe '#initialize' do
@@ -20,14 +19,11 @@ describe GoFishGame do
 
   describe '#start' do
     it 'deals cards to players' do
-      # game.add_players('P1', 'P2')
-      # player1 = game.players.first
       game.start
       expect(p1.hand.length).to eq(GoFishGame::CARDS_DEALT_7)
     end
 
     it 'should assign a current player' do
-      game.add_players('p1', 'p2')
       game.start
 
       expect(game.current_player).to eq(game.players.first)
@@ -78,10 +74,12 @@ describe GoFishGame do
 
       expect(game.request_rank(current_player, 'foo')).to be_falsey
     end
+
+    it 'ask a target for a valid rank, but the asking player does not have rank in hand'
   end
   
   describe '#request_player' do
-    it 'should ask a for a target player' do
+    it 'should return target for a target player request' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards
       current_player = game.players.first
@@ -89,7 +87,7 @@ describe GoFishGame do
       expect(game.request_player(current_player, 'p2')).to eq(game.players[1])
     end
 
-    it 'asks a player for an invalid player' do
+    it 'should return false value for an invalid player request' do
       game.add_players('P1', 'P2', 'P3', 'P4')
       game.deal_cards
       current_player = game.players.first
@@ -103,33 +101,66 @@ describe GoFishGame do
     let(:king_hearts) { PlayingCard.new('King', 'Hearts') }
     let(:ace_clubs) { PlayingCard.new('Ace', 'Clubs') }
     let(:king_clubs) { PlayingCard.new('King', 'Clubs')}
+    let(:ace_diamonds) { PlayingCard.new('Ace', 'Diamonds') }
+    let(:ace_spades) { PlayingCard.new('Ace', 'Spades') }
 
     context 'stays turn' do
-      it 'should collect cards of a certain rank from attacked player and add them to current player' do
-
+      it 'should request card rank, target has it, does not complete a book' do
         game.start
         game.players.first.hand = [ace_hearts, king_hearts]
         game.players.last.hand = [ace_clubs, king_clubs]
-        game.play_round(game.players.last, 'Ace')
+        game.play_round('p2', 'Ace')
 
         expect(game.players.first.hand).to eq([ace_hearts, king_hearts, ace_clubs])
+        expect(game.players.last.hand).to match_array([king_clubs])
+      end
+
+      it 'should request card rank, target does not have it, card is fished and is not a book' do
+        game.start
+        game.deck.cards = CardDeck.new.build_deck
+        game.players.first.hand = [ace_hearts, king_hearts]
+        game.players.last.hand = [king_clubs]
+        game.play_round('p2', 'Ace')
+
+        expect(game.current_player.hand).to eq([ace_hearts, king_hearts, ace_clubs])
         expect(game.players.last.hand).to eq([king_clubs])
       end
+
+      xit 'should request card rank, target has it, completes a book, there are not deck_size/books_size books' do
+        game.start
+        game.players.first.hand = [ace_hearts, king_hearts, ace_spades]
+        game.players.last.hand = [ace_clubs, king_clubs, ace_diamonds]
+        game.play_round(game.players.last, 'Ace')
+
+        expect(game.players.first.hand).to eq([king_hearts])
+        expect(game.players.last.hand).to eq([king_clubs])
+        expect(game.players.first.books).to eq([ace_spades, ace_hearts, ace_diamonds, ace_clubs])
+      end
+      it 'should request card rank, target does not have it, card is fished and completes a book, there are not deck_size/books_size books'
+      it 'should request card rank, target does not have it, card is fished, completes a book, there are deck_size/books_size books'
     end
     
     context 'turn changes' do
-
+      it 'should request card rank, target does not have it, card is not fished' do
+        game.start
+        game.deck.cards = CardDeck.new.build_deck
+        game.players.first.hand = [ace_hearts, king_hearts]
+        game.players.last.hand = [king_clubs]
+        game.play_round('p2', '10')
+        
+        expect(game.players.first.hand).to eq([ace_hearts, king_hearts, ace_clubs])
+        expect(game.players.last.hand).to eq([king_clubs])
+        expect(game.current_player).to eq(game.players.last)
+      end
     end
-
-    it 'should collect cards of a certain rank from attacked player and add them to current player'
-    it 'should update current_player to player 2 if starting with player 1'
-  end
-
-  describe '#update_current_player' do
-    it 'should update current_player to player 2 if starting with player 1'
-  end
-
-  describe '#collect_cards' do
-    it 'should collect cards of a certain rank from attacked player and add them to current player'
+    
+    context 'deck is out' do
+      it 'should request card rank, target does not have it, deck is out'
+    end
+    
+    context 'game over' do
+      it 'should request card rank, target does not have it, deck is out, all cards are books'
+      it 'should request card rank, target has it, completes a book, there are deck_size/books_size books'
+    end
   end
 end

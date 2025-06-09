@@ -8,8 +8,8 @@ class CardDeck
   end
 
   def build_deck
-    PlayingCard::RANKS.flat_map do |rank|
-      PlayingCard::SUITS.map do |suit|
+    PlayingCard::SUITS.flat_map do |suit|
+      PlayingCard::RANKS.map do |rank|
         PlayingCard.new(rank, suit)
       end
     end
