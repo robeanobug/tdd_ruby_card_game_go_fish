@@ -126,16 +126,17 @@ describe GoFishGame do
         expect(game.players.last.hand).to eq([king_clubs])
       end
 
-      xit 'should request card rank, target has it, completes a book, there are not deck_size/books_size books' do
+      it 'should request card rank, target has it, completes a book, there are not deck_size/books_size books' do
         game.start
         game.players.first.hand = [ace_hearts, king_hearts, ace_spades]
         game.players.last.hand = [ace_clubs, king_clubs, ace_diamonds]
-        game.play_round(game.players.last, 'Ace')
+        game.play_round('p2', 'Ace')
 
-        expect(game.players.first.hand).to eq([king_hearts])
-        expect(game.players.last.hand).to eq([king_clubs])
+        expect(game.players.first.hand).to match_array([king_hearts])
+        expect(game.players.last.hand).to match_array([king_clubs])
         expect(game.players.first.books).to eq([ace_spades, ace_hearts, ace_diamonds, ace_clubs])
       end
+
       it 'should request card rank, target does not have it, card is fished and completes a book, there are not deck_size/books_size books'
       it 'should request card rank, target does not have it, card is fished, completes a book, there are deck_size/books_size books'
     end

@@ -1,8 +1,10 @@
 class Player
-  attr_accessor :hand, :name
+  attr_accessor :hand, :name, :books
+  BOOK_SIZE = 4
   def initialize(name)
     @name = name
     @hand = []
+    @books = []
   end
 
   def add_card(card)
@@ -15,6 +17,14 @@ class Player
     end
     delete_cards(found_cards)
     found_cards
+  end
+
+  def book?
+    grouped_ranks = hand.group_by { |hand| hand.rank }
+    grouped_ranks.each do |rank, cards|
+      return true if cards.length == BOOK_SIZE
+    end
+    false
   end
 
   private

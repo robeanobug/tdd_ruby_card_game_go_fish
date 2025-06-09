@@ -23,11 +23,9 @@ class GoFishGame
     request_rank(current_player, request)
     target = request_player(current_player, target_name)
     requested_cards = target.take_cards_of_rank(request)
-    p "requested cards before adding to current player: #{requested_cards}"
     unless requested_cards.empty?
       requested_cards.each { |requested_card| current_player.add_card(requested_card) }
     end
-    p "requested cards after adding to current player: #{requested_cards}"
     if requested_cards.empty?
       fished_card = go_fish
       current_player.add_card(fished_card)
