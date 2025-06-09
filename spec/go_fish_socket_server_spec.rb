@@ -89,6 +89,17 @@ describe GoFishSocketServer do
     expect(@server.games.count).to eq(game_count)
   end
 
-  it 'sends clients a welcome message'
+  it 'sends clients a welcome message' do
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+
+    @clients.push(client2)
+    @server.accept_new_client('Player2')
+
+    @server.create_game_if_possible
+
+    expect(client1.capture_output).to match /welcome/i
+    expect(client2.capture_output).to match /welcome/i
+  end
   it 'sends all clients a message when the game starts'
 end

@@ -20,7 +20,7 @@ class GoFishSocketServer
     player = Player.new(player_name)
     players << player
     clients << client
-    client.puts 'Welcome to Go Fish!'
+    client.puts 'Welcome to Go Fish! Waiting for players...'
   rescue IO::WaitReadable, Errno::EINTR
     puts 'No client to accept'
   end
