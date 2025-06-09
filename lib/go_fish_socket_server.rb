@@ -3,7 +3,7 @@ require_relative 'go_fish_game'
 require_relative 'player'
 
 class GoFishSocketServer
-  attr_accessor :server, :games, :clients, :players, :responses
+  attr_accessor :server, :games, :clients, :players, :lobbies
   attr_reader :port_number
 
   def initialize
@@ -12,7 +12,8 @@ class GoFishSocketServer
     @games ||= []
     @clients ||= []
     @players ||= []
-    @responses ||= []
+    # @responses ||= []
+    @lobbies ||= []
   end
 
   def accept_new_client(player_name = 'Random Player')
@@ -25,13 +26,18 @@ class GoFishSocketServer
     puts 'No client to accept'
   end
 
-  def create_game_if_possible
-    if players.count > 1
-      game = GoFishGame.new(players)
-      game.start
-      games << game
-    end
+  def create_lobby(host_player)
+    
+    lobby << GoFishLobby.new
   end
+
+  # def create_game_if_possible
+  #   if players.count > 1
+  #     game = GoFishGame.new(players)
+  #     game.start
+  #     games << game
+  #   end
+  # end
 
   def start
     @server = TCPServer.new(port_number)

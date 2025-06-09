@@ -65,11 +65,29 @@ describe GoFishSocketServer do
     @server.accept_new_client('Player 1')
     @clients.push(client2)
     @server.accept_new_client('Player 2')
-
+    
     expect(@server.players.count).to eq(player_count)
   end
 
-  it 'should start a game if player 1 says ready and at least 2 players' do
+  it 'sends clients a welcome message' do
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+
+    @clients.push(client2)
+    @server.accept_new_client('Player2')
+
+    expect(client1.capture_output).to match /welcome/i
+    expect(client2.capture_output).to match /welcome/i
+  end
+
+  it 'creates lobby for the players to gather' do
+    @clients.push(client1)
+    @server.accept_new_client('Player 1')
+
+    expect(@server.lobbies.length).to eq(1)
+  end
+  
+  xit 'should start a game if player 1 says ready and at least 2 players' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     @clients.push(client2)
@@ -80,7 +98,7 @@ describe GoFishSocketServer do
     expect(@server.games.count).to eq(game_count)
   end
 
-  it 'should not start a game if less than 2 players' do
+  xit 'should not start a game if less than 2 players' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     @server.create_game_if_possible
@@ -89,7 +107,8 @@ describe GoFishSocketServer do
     expect(@server.games.count).to eq(game_count)
   end
 
-  it 'sends clients a welcome message' do
+
+  xit 'should not start game until Player 1 is ready' do # should this go in the socket server runner
     @clients.push(client1)
     @server.accept_new_client('Player 1')
 
@@ -97,9 +116,8 @@ describe GoFishSocketServer do
     @server.accept_new_client('Player2')
 
     @server.create_game_if_possible
-
-    expect(client1.capture_output).to match /welcome/i
-    expect(client2.capture_output).to match /welcome/i
   end
-  it 'sends all clients a message when the game starts'
+
+  it 'should request a desired player target from current player'
+  it 'should request a desired card rank from current player'
 end
