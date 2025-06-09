@@ -1,47 +1,36 @@
 require_relative '../lib/go_fish_lobby'
 
 describe GoFishLobby do
-  it 'initializes with a host player' do
-    host = Player.new('p1')
-    lobby = GoFishLobby.new(host)
-
-    expect(lobby.host).to eq(host)
-    expect(lobby.players).to be_a(Array)
-  end
-
-  it 'should add a player' do
-    host = Player.new('p1')
+  it 'should initialize with a game' do
+    player1 = Player.new('p1')
     player2 = Player.new('p2')
-    lobby = GoFishLobby.new(host)
-    lobby.add_player(player2)
-    players_length = 2
+    game = GoFishGame.new([player1, player2])
+    lobby = GoFishLobby.new(game)
 
-    expect(lobby.players.length).to eq(players_length)
+    expect(lobby.game).to_not be_nil
+    expect(lobby.players).to_not be_nil
   end
 
-  xit 'should start the game when the host is ready and there are at least 2 players' do
-    host = Player.new('p1')
-    lobby = GoFishLobby.new(host)
-
-    
+  xit 'should inform player of hand' do
+  
+    expect(game.current_player.client.capture_output).to match /your cards/i
   end
 
-  xit 'should not start a game if less than 2 players' do
+  xit 'should get a target player from the current player' do
     @clients.push(client1)
-    @server.accept_new_client('Player 1')
-    @server.create_game_if_possible
-    game_count = 0
-
-    expect(@server.games.count).to eq(game_count)
-  end
-
-  xit 'should not start game until Player 1 is ready' do # should this go in the socket server runner
-    @clients.push(client1)
-    @server.accept_new_client('Player 1')
+    @server.accept_new_client('p1')
 
     @clients.push(client2)
-    @server.accept_new_client('Player2')
+    @server.accept_new_client('p2')
 
     @server.create_game_if_possible
+    @server.run_game
+
+    allow(@server).to receive(:gets).and_return('p2')
+    allow(@server).to receive(:gets).and_return('Ace')
+
+    expect()
   end
+  it 'should select a rank'
+  it 'should validate inputs'
 end

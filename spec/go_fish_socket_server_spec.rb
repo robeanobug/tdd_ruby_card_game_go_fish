@@ -48,8 +48,8 @@ describe GoFishSocketServer do
     expect { MockGoFishSocketClient.new(@server.port_number)}.to raise_error(Errno::ECONNREFUSED)
   end
 
-  xit 'is listening on a port after it is started' do
-    expect { MockGoFishSocketClient.new(@server.port_number)}.to eq(3336)
+  xit 'is listening on a port after it is started' do # This test does not work
+    expect { MockGoFishSocketClient.new(@server.port_number)}.to_not be_nil
   end
 
   it 'accepts a new client' do
@@ -84,10 +84,10 @@ describe GoFishSocketServer do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
 
-    expect(@server.lobbies.length).to eq(1)
+    expect(@server.lobby).to_not be_nil
   end
   
-  xit 'should start a game if player 1 says ready and at least 2 players' do
+  it 'should start a game if at least 2 players' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     @clients.push(client2)
@@ -98,7 +98,7 @@ describe GoFishSocketServer do
     expect(@server.games.count).to eq(game_count)
   end
 
-  xit 'should not start a game if less than 2 players' do
+  it 'should not start a game if less than 2 players' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     @server.create_game_if_possible
@@ -116,6 +116,8 @@ describe GoFishSocketServer do
     @server.accept_new_client('Player2')
 
     @server.create_game_if_possible
+
+    expect(@server.games.count).to eq(game_count)
   end
 
   it 'should request a desired player target from current player'

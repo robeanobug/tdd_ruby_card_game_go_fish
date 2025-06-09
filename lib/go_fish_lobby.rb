@@ -3,15 +3,10 @@ require_relative 'go_fish_socket_server'
 require_relative 'go_fish_game'
 
 class GoFishLobby
-  attr_accessor :players
-  attr_reader :host
+  attr_reader :game, :players
 
-  def initialize(host)
-    @host = host
-    @players = [host]
-  end
-
-  def add_player(player)
-    players << player
+  def initialize(game)
+    @game = game
+    @players = game.players
   end
 end

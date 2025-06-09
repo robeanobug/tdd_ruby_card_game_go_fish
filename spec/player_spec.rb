@@ -9,11 +9,11 @@ describe Player do
   let(:two_diamonds) { PlayingCard.new('2', 'Diamonds') }
   let(:two_clubs) { PlayingCard.new('2', 'Clubs') }
   
-
-  it 'initializes player' do
+  it 'initializes player with hand, name, books, client' do
     expect(player.hand).to be_a(Array)
     expect(player.name).to eq('P1')
     expect(player.books).to be_a(Array)
+    expect(player.client).to_not be_nil
   end
 
   describe '#add_card' do
