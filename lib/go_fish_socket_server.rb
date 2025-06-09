@@ -21,14 +21,16 @@ class GoFishSocketServer
     player = Player.new(player_name)
     players << player
     clients << client
-    client.puts 'Welcome to Go Fish! Waiting for players...'
+    client.puts 'Welcome to Go Fish! You are in the waiting lobby. Waiting for players to join...'
+    if players.length == 1
+      create_lobby(players[0])
+    end
   rescue IO::WaitReadable, Errno::EINTR
     puts 'No client to accept'
   end
 
   def create_lobby(host_player)
-    
-    lobby << GoFishLobby.new
+    lobbies << GoFishLobby.new(host_player)
   end
 
   # def create_game_if_possible
