@@ -8,11 +8,9 @@ class GoFishSocketServer
 
   def initialize
     @port_number = 3336
-    @server = 0
-    @games ||= []
-    @clients ||= []
-    @players ||= []
-    @lobby ||= 0
+    @games = []
+    @clients = []
+    @players = []
   end
 
   def accept_new_client(player_name = 'Random Player')
@@ -33,7 +31,7 @@ class GoFishSocketServer
       game = GoFishGame.new(players)
       game.start
       games << game
-      lobby = GoFishLobby.new(game)
+      self.lobby = GoFishLobby.new(game, clients)
     end
   end
 

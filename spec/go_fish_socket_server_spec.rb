@@ -1,29 +1,6 @@
 require 'socket'
 require_relative '../lib/go_fish_socket_server'
-
-class MockGoFishSocketClient
-  attr_reader :socket
-  attr_reader :output
-
-  def initialize(port)
-    @socket = TCPSocket.new('localhost', port)
-  end
-
-  def provide_input(text)
-    @socket.puts(text)
-  end
-
-  def capture_output(delay=0.1)
-    sleep(delay)
-    @output = @socket.read_nonblock(200_000)
-  rescue IO::WaitReadable
-    @output = ""
-  end
-
-  def close
-    @socket.close if @socket
-  end
-end
+require_relative '../lib/mock_go_fish_socket_client'
 
 describe GoFishSocketServer do
   before(:each) do
@@ -46,10 +23,6 @@ describe GoFishSocketServer do
   it 'is not listening on a port before it is started' do
     @server.stop
     expect { MockGoFishSocketClient.new(@server.port_number)}.to raise_error(Errno::ECONNREFUSED)
-  end
-
-  xit 'is listening on a port after it is started' do # This test does not work
-    expect { MockGoFishSocketClient.new(@server.port_number)}.to_not be_nil
   end
 
   it 'accepts a new client' do
@@ -84,6 +57,10 @@ describe GoFishSocketServer do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
 
+    @clients.push(client2)
+    @server.accept_new_client('Player2')
+    @server.create_game_if_possible
+
     expect(@server.lobby).to_not be_nil
   end
   
@@ -107,8 +84,7 @@ describe GoFishSocketServer do
     expect(@server.games.count).to eq(game_count)
   end
 
-
-  xit 'should not start game until Player 1 is ready' do # should this go in the socket server runner
+  xit 'should create a hash that associates player with client' do
     @clients.push(client1)
     @server.accept_new_client('Player 1')
 
@@ -117,9 +93,20 @@ describe GoFishSocketServer do
 
     @server.create_game_if_possible
 
-    expect(@server.games.count).to eq(game_count)
+    expect()
   end
 
-  it 'should request a desired player target from current player'
-  it 'should request a desired card rank from current player'
+
+
+  # xit 'should not start game until Player 1 is ready' do # should this go in the socket server runner
+  #   @clients.push(client1)
+  #   @server.accept_new_client('Player 1')
+
+  #   @clients.push(client2)
+  #   @server.accept_new_client('Player2')
+
+  #   @server.create_game_if_possible
+
+  #   expect(@server.games.count).to eq(game_count)
+  #   end
 end
