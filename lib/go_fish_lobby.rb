@@ -1,3 +1,4 @@
+# require 'socket'
 require_relative 'player'
 require_relative 'go_fish_socket_server'
 require_relative 'go_fish_game'
@@ -10,8 +11,16 @@ class GoFishLobby
     @clients = clients
   end
 
-  def display_hand(client)
-    client.puts "Your cards are: #{current_player.hand}"
+  def play_round
+    # current_client.socket.puts 'else'
+    # binding.irb
+    # display_hand
+    current_client.puts "Your cards"
+  end
+
+  def display_hand
+    puts current_client.socket.inspect
+    # current_client.socket.puts "Your cards are: #{current_player.hand}"
   end
 
   def player_to_client
@@ -22,13 +31,18 @@ class GoFishLobby
     player_client
   end
 
-  private
-
   def players
     game.players
   end
 
+  private
+
+
   def current_player
     game.current_player
+  end
+
+  def current_client
+    player_to_client[current_player]
   end
 end
