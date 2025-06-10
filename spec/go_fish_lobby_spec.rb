@@ -39,9 +39,9 @@ describe GoFishLobby do
     client1.capture_output
     lobby.play_round
     response = client1.capture_output
-    p response
     expect(response).to match /your cards/i
     expect(PlayingCard::RANKS.any? { |rank| response.include?(rank) }).to be_truthy
+    expect(PlayingCard::SUITS.any? { |suit| response.include?(suit) }).to be_truthy
   end
 
   it 'should get a target player from the current player' do
@@ -50,10 +50,11 @@ describe GoFishLobby do
     expect(lobby.get_target).to eq(lobby.players.last)
   end
 
-  it 'should get a target player from the current player' do
+  it 'should not get a target player from the current player if the request is invalid' do
     lobby.play_round
     client1.provide_input('foo')
-    expect(lobby.get_target).to eq(false)
+
+    expect(client1.capture_output).to match /Invalid player/i
   end
 
   xit 'should get a rank from the current player' do

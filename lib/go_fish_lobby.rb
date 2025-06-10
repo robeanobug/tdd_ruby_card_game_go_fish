@@ -14,6 +14,8 @@ class GoFishLobby
 
   def play_round
     display_hand
+    get_target
+    # binding.irb
   end
 
   def display_hand
@@ -58,6 +60,5 @@ class GoFishLobby
     player = find_player(player_name)
     return player if player
     current_client.puts 'Invalid player'
-    false
   end
 end
