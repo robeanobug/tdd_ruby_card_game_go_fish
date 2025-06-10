@@ -5,7 +5,7 @@ require_relative 'go_fish_game'
 
 class GoFishLobby
   attr_reader :game, :players_clients
-  attr_accessor :response
+  attr_accessor :response, :hand_displayed, :request_rank_displayed,:requested_valid_rank
 
   def initialize(game, players_clients)
     @game = game
@@ -13,27 +13,33 @@ class GoFishLobby
   end
 
   def play_round
-    display_hand
-    get_rank
-    get_target
+    display_hand unless hand_displayed
+    get_rank unless requested_valid_rank # add guarding
+    get_target # add guarding
+    # move cards around
+    # send results to players
   end
 
   private
 
   def display_hand
     current_client.puts "Your cards are: #{ current_player.hand.map { |card| "#{card.rank} of #{card.suit}" } }"
+    self.hand_displayed = true
   end
 
   def get_rank
     current_client.puts "Please request to card rank (ex: 2 or Ace): "
-    requested_rank = listen_to_current_client if valid_rank?(listen_to_current_client)
+    self.request_rank_displayed = true
+    requested_rank = listen_to_current_client
+    return unless valid_rank?(requested_rank)
+    self.requested_valid_rank = requested_rank
     current_client.puts "You are requesting rank: #{ requested_rank }"
   end
   
   def get_target
     current_client.puts "Please enter a player to target: "
     player_name = listen_to_current_client
-    player = valid_player(player_name)
+    player = valid_player(player_name) # 
     current_client.puts "Your target: #{ player_name }"
     player
   end
@@ -69,8 +75,8 @@ class GoFishLobby
     end
   end
 
-  def valid_rank?(requested_rank)
-    return true if PlayingCard::RANKS.include?(requested_rank)
+  def valid_rank?(rank)
+    return true if PlayingCard::RANKS.include?(rank)
     current_client.puts 'Invalid rank'
   end
 end

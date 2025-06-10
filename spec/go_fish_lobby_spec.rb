@@ -29,29 +29,37 @@ describe GoFishLobby do
 
   describe '#initialize' do
     it 'should initialize with a game' do
-      # This fails SOMETIMES???
-      # expect(@server).to respond_to(create_game_if_possible)
-      # lobby = @server.lobby
       expect(lobby).to respond_to(:play_round)
     end
   end
 
   describe '#play_round' do
-    it 'should inform player of hand' do
-      client2.capture_output
-      client1.capture_output
+    it 'should inform player of hand once' do
       lobby.play_round
       response = client1.capture_output
+
       expect(response).to match /your cards/i
       expect(PlayingCard::RANKS.any? { |rank| response.include?(rank) }).to be_truthy
       expect(PlayingCard::SUITS.any? { |suit| response.include?(suit) }).to be_truthy
+
+      lobby.play_round
+      response = client1.capture_output
+
+      expect(response).to_not match /your cards/i
     end
 
-    it 'should get a rank from the current player' do
+    it 'should get a rank from the current player once' do
       lobby.play_round
       client1.provide_input('Ace')
+      lobby.play_round
+      response = client1.capture_output
 
-      expect(client1.capture_output).to match /You are requesting rank: /i
+      expect(response).to match /You are requesting rank: /i
+
+      lobby.play_round
+      response = client1.capture_output
+
+      expect(response).to_not match /You are requesting rank: /i
     end
 
     it 'should not get a rank from the current player if the rank is invalid' do
