@@ -5,7 +5,7 @@ require_relative 'go_fish_game'
 
 class GoFishLobby
   attr_reader :game, :players_clients
-  attr_accessor :response, :hand_displayed, :request_rank_displayed,:requested_valid_rank
+  attr_accessor :response, :hand_displayed, :requested_rank_displayed, :requested_player, :rank, :target
 
   def initialize(game, players_clients)
     @game = game
@@ -14,8 +14,8 @@ class GoFishLobby
 
   def play_round
     display_hand unless hand_displayed
-    get_rank unless requested_valid_rank # add guarding
-    get_target # add guarding
+    self.rank = get_rank unless rank
+    self.target = get_target unless target
     # move cards around
     # send results to players
   end
@@ -28,20 +28,19 @@ class GoFishLobby
   end
 
   def get_rank
-    current_client.puts "Please request to card rank (ex: 2 or Ace): "
-    self.request_rank_displayed = true
+    current_client.puts "Please request to card rank (ex: 2 or Ace): " unless requested_rank_displayed
     requested_rank = listen_to_current_client
     return unless valid_rank?(requested_rank)
-    self.requested_valid_rank = requested_rank
-    current_client.puts "You are requesting rank: #{ requested_rank }"
+    current_client.puts "You are requesting rank: #{ requested_rank }" unless requested_rank_displayed
+    self.requested_rank_displayed = true
   end
   
   def get_target
-    current_client.puts "Please enter a player to target: "
+    current_client.puts "Please enter a player to target: " unless requested_player
     player_name = listen_to_current_client
-    player = valid_player(player_name) # 
-    current_client.puts "Your target: #{ player_name }"
-    player
+    self.requested_player = valid_player(player_name)
+    current_client.puts "Your target is: #{ player_name }"  unless requested_player
+    requested_player
   end
 
   def players
