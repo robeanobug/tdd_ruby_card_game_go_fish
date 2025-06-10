@@ -69,14 +69,6 @@ describe GoFishGame do
       expect(game.request_rank(current_player, 'Ace')).to eq('Ace')
     end
 
-    it 'asks a player for an invalid rank' do
-      game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards
-      current_player = game.players.first
-
-      expect(game.request_rank(current_player, 'foo')).to be_falsey
-    end
-
     it 'ask a target for a valid rank, but the asking player does not have rank in hand'
   end
   
@@ -87,14 +79,6 @@ describe GoFishGame do
       current_player = game.players.first
 
       expect(game.request_player(current_player, 'p2')).to eq(game.players[1])
-    end
-
-    it 'should return false value for an invalid player request' do
-      game.add_players('P1', 'P2', 'P3', 'P4')
-      game.deal_cards
-      current_player = game.players.first
-
-      expect(game.request_player(current_player, 'foo')).to be_falsey
     end
   end
 

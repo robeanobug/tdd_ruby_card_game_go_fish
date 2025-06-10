@@ -14,25 +14,32 @@ class GoFishLobby
 
   def play_round
     display_hand
+    get_rank
     get_target
-    # binding.irb
   end
 
   def display_hand
-    # currently just puts the playing card addresses
     current_client.puts "Your cards are: #{ current_player.hand.map { |card| "#{card.rank} of #{card.suit}" } }"
   end
 
+  def get_rank
+    current_client.puts "Please request to card rank (ex: 2 or Ace): "
+    requested_rank = listen_to_current_client
+    current_client.puts "You are requesting rank: #{ requested_rank }"
+  end
+  
+  def get_target
+    current_client.puts "Please enter a player to target: "
+    player_name = listen_to_current_client
+    player = valid_player(player_name)
+    current_client.puts "Your target: #{ player_name }"
+    player
+  end
+  
   def players
     game.players
   end
 
-  def get_target
-    current_client.puts "Please enter a player to target: "
-    player_name = listen_to_current_client
-    valid_player(player_name)
-  end
-  
   def current_player
     game.current_player
   end
@@ -50,15 +57,15 @@ class GoFishLobby
     ""
   end
 
-  def find_player(player_name)
-    players.find do |player|
-      player.name.downcase == player_name.downcase
-    end
-  end
-
   def valid_player(player_name)
     player = find_player(player_name)
     return player if player
     current_client.puts 'Invalid player'
+  end
+  
+  def find_player(player_name)
+    players.find do |player|
+      player.name.downcase == player_name.downcase
+    end
   end
 end
