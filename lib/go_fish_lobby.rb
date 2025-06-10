@@ -18,6 +18,8 @@ class GoFishLobby
     get_target
   end
 
+  private
+
   def display_hand
     current_client.puts "Your cards are: #{ current_player.hand.map { |card| "#{card.rank} of #{card.suit}" } }"
   end
@@ -35,8 +37,6 @@ class GoFishLobby
     current_client.puts "Your target: #{ player_name }"
     player
   end
-  
-  private
 
   def players
     game.players
