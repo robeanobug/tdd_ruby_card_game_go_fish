@@ -158,7 +158,18 @@ describe GoFishGame do
     end
     
     context 'deck is out' do
-      it 'should request card rank, target does not have it, deck is out'
+      xit 'should request card rank, target does not have it, deck is out' do
+        game.players.first.hand = [ace_hearts, king_hearts]
+        game.players.last.hand = [king_clubs]
+        game.deck.cards = []
+        game.play_round('p2', '10')
+  
+        expect(game.players.first.hand).to eq([ace_hearts, king_hearts])
+      end
+    end
+
+    context 'player does not have cards' do
+      it 'should draw a card before turn starts'
     end
     
     context 'game over' do

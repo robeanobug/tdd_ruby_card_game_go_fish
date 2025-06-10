@@ -12,7 +12,7 @@ class Player
     if cards.is_a?(PlayingCard)
       hand << cards
     else
-      cards.each { |card| hand << card }
+      cards.each { |card| hand << card } if cards
     end
   end
 
