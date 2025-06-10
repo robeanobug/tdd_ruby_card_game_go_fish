@@ -18,7 +18,7 @@ class GoFishLobby
 
   def display_hand
     # currently just puts the playing card addresses
-    current_client.puts "Your cards are: #{ current_player.hand }"
+    current_client.puts "Your cards are: #{ current_player.hand.map { |card| "#{card.rank} of #{card.suit}" } }"
   end
 
   def players
@@ -30,12 +30,12 @@ class GoFishLobby
     player_name = listen_to_current_client
     valid_player(player_name)
   end
-
-  private
-
+  
   def current_player
     game.current_player
   end
+  
+  private
 
   def current_client
     players_clients[current_player]

@@ -6,6 +6,7 @@ describe GoFishLobby do
     @clients = []
     @server = GoFishSocketServer.new
     @server.start
+    sleep 0.1
     @clients.push(client1)
     @server.accept_new_client('Player 1')
     
@@ -13,7 +14,6 @@ describe GoFishLobby do
     @server.accept_new_client('Player 2')
     
     @server.create_game_if_possible
-    sleep 0.1
   end
 
   after(:each) do
@@ -27,20 +27,21 @@ describe GoFishLobby do
   let(:client2) { MockGoFishSocketClient.new(@server.port_number) }
   let(:lobby) { @server.lobby }
   
-  xit 'should initialize with a game' do
+  it 'should initialize with a game' do
     # This fails SOMETIMES???
     # expect(@server).to respond_to(create_game_if_possible)
     # lobby = @server.lobby
-    expect(lobby).to respond_to(play_round)
+    expect(lobby).to respond_to(:play_round)
   end
 
   it 'should inform player of hand' do
     client2.capture_output
     client1.capture_output
-    # p lobby
     lobby.play_round
-
-    expect(client1.capture_output).to match /your cards/i
+    response = client1.capture_output
+    p response
+    expect(response).to match /your cards/i
+    expect(PlayingCard::RANKS.any? { |rank| response.include?(rank) }).to be_truthy
   end
 
   it 'should get a target player from the current player' do
@@ -49,6 +50,22 @@ describe GoFishLobby do
     expect(lobby.get_target).to eq(lobby.players.last)
   end
 
-  it 'should select a rank'
+  it 'should get a target player from the current player' do
+    lobby.play_round
+    client1.provide_input('foo')
+    expect(lobby.get_target).to eq(false)
+  end
+
+  xit 'should get a rank from the current player' do
+    lobby.play_round
+    client1.provide_input('Player 2')
+    lobby.play_round
+    client1.provide_input('Ace')
+    lobby.play_round
+    hand_length = 8
+    expect(lobby.current_player.hand.length).to eq(hand_length)
+    # better if this is testing the message back to client
+    # expect(client1.capture_output)
+  end
   it 'should validate inputs'
 end
