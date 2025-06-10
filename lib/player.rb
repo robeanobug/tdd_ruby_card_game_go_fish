@@ -1,11 +1,10 @@
 class Player
-  attr_accessor :hand, :name, :books, :client
+  attr_accessor :hand, :name, :books
   BOOK_SIZE = 4
-  def initialize(name, client = 0)
+  def initialize(name)
     @name = name
     @hand = []
     @books = []
-    @client = client # best if I remove
   end
 
   def add_card(cards)

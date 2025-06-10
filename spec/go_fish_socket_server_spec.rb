@@ -92,7 +92,7 @@ describe GoFishSocketServer do
     @server.accept_new_client('Player2')
 
     @server.create_game_if_possible
-
+    
     expect()
   end
 

@@ -4,11 +4,12 @@ require_relative 'go_fish_socket_server'
 require_relative 'go_fish_game'
 
 class GoFishLobby
-  attr_reader :game, :players, :clients
+  attr_reader :game, :players_clients
+  attr_accessor :response
 
-  def initialize(game, clients)
+  def initialize(game, players_clients)
     @game = game
-    @clients = clients
+    @players_clients = players_clients
   end
 
   def play_round
@@ -16,19 +17,18 @@ class GoFishLobby
   end
 
   def display_hand
-    current_client.puts "Your cards are: #{current_player.hand}"
-  end
-
-  def player_to_client
-    player_client = Hash.new
-    players.each_with_index do |player, i|
-      player_client[player] = clients[i]
-    end
-    player_client
+    # currently just puts the playing card addresses
+    current_client.puts "Your cards are: #{ current_player.hand }"
   end
 
   def players
     game.players
+  end
+
+  def get_target
+    current_client.puts "Please enter a player to target: "
+    player_name = listen_to_current_client
+    valid_player(player_name)
   end
 
   private
@@ -38,6 +38,26 @@ class GoFishLobby
   end
 
   def current_client
-    player_to_client[current_player]
+    players_clients[current_player]
+  end
+
+  def listen_to_current_client(delay=0.1)
+    sleep(delay)
+    current_client.read_nonblock(200_000).chomp
+  rescue IO::WaitReadable
+    ""
+  end
+
+  def find_player(player_name)
+    players.find do |player|
+      player.name.downcase == player_name.downcase
+    end
+  end
+
+  def valid_player(player_name)
+    player = find_player(player_name)
+    return player if player
+    current_client.puts 'Invalid player'
+    false
   end
 end
