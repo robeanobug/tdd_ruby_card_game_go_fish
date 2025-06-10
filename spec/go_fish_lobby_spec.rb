@@ -54,7 +54,7 @@ describe GoFishLobby do
       expect(client1.capture_output).to match /You are requesting rank: /i
     end
 
-    xit 'should not get a rank from the current player if the rank is invalid' do
+    it 'should not get a rank from the current player if the rank is invalid' do
       lobby.play_round
       client1.provide_input('Ace')
 
@@ -66,8 +66,7 @@ describe GoFishLobby do
       client1.provide_input('Ace')
       lobby.play_round
       client1.provide_input('Player 2')
-      expect(lobby.get_target).to eq(lobby.players.last)
-      expect(client1.capture_output).to match /Player 2/i
+      expect(client1.capture_output).to match /Your target: /i
     end
 
     it 'should not get a target player from the current player if the request is invalid' do

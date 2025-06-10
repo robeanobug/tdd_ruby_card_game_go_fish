@@ -24,7 +24,7 @@ class GoFishLobby
 
   def get_rank
     current_client.puts "Please request to card rank (ex: 2 or Ace): "
-    requested_rank = listen_to_current_client
+    requested_rank = listen_to_current_client if valid_rank?(listen_to_current_client)
     current_client.puts "You are requesting rank: #{ requested_rank }"
   end
   
@@ -36,6 +36,8 @@ class GoFishLobby
     player
   end
   
+  private
+
   def players
     game.players
   end
@@ -43,8 +45,6 @@ class GoFishLobby
   def current_player
     game.current_player
   end
-  
-  private
 
   def current_client
     players_clients[current_player]
@@ -67,5 +67,10 @@ class GoFishLobby
     players.find do |player|
       player.name.downcase == player_name.downcase
     end
+  end
+
+  def valid_rank?(requested_rank)
+    return true if PlayingCard::RANKS.include?(requested_rank)
+    current_client.puts 'Invalid rank'
   end
 end

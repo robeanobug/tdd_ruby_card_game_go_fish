@@ -105,7 +105,6 @@ describe GoFishGame do
         expect(game.players.last.hand).to match_array([king_clubs])
       end
 
-
       it 'should request card rank, target does not have it, card is fished and is not a book' do
         game.players.first.hand = [ace_hearts, king_hearts]
         game.players.last.hand = [king_clubs]
