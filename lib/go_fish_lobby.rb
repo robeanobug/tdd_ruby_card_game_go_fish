@@ -28,10 +28,13 @@ class GoFishLobby
 
   def get_rank
     return if rank
-    current_client.puts "Please request to card rank (ex: 2 or Ace): " unless requested_rank_displayed
+    current_client.puts "Please request a card rank (ex: 2 or Ace): " unless requested_rank_displayed
     self.requested_rank_displayed = true
+    receive_rank_from_client
+  end
+  
+  def receive_rank_from_client
     requested_rank = listen_to_current_client
-    # binding.irb
     if requested_rank && valid_rank?(requested_rank)
       current_client.puts "You are requesting rank: #{ requested_rank }"
       self.rank = requested_rank

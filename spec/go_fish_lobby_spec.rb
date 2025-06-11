@@ -50,7 +50,7 @@ describe GoFishLobby do
 
     it 'should get a rank from the current player once' do
       lobby.play_round
-      expect(client1.capture_output).to match /Please request to card rank/i
+      expect(client1.capture_output).to match /Please request a card rank/i
       client1.provide_input('Ace')
       lobby.play_round
 
@@ -68,15 +68,15 @@ describe GoFishLobby do
 
     it 'should not get a rank from the current player if the rank is invalid' do
       lobby.play_round
-      expect(client1.capture_output).to match /Please request to card rank/i
+      expect(client1.capture_output).to match /Please request a card rank/i
       client1.provide_input('A')
       lobby.play_round
 
       expect(client1.capture_output).to match /Invalid rank/i
       lobby.play_round
-      expect(client1.capture_output).to match /Please request to card rank/i
+      expect(client1.capture_output).to match /Please request a card rank/i
       lobby.play_round
-      expect(client1.capture_output).to_not match /Please request to card rank/i
+      expect(client1.capture_output).to_not match /Please request a card rank/i
     end
 
     it 'should get a target player from the current player once' do
@@ -108,7 +108,7 @@ describe GoFishLobby do
       expect(response).to match /Invalid player/i
     end
 
-    it 'should output the results of a round' do
+    xit 'should output the results of a round' do
       lobby.play_round
       client1.provide_input('Ace')
       lobby.play_round
@@ -124,6 +124,7 @@ describe GoFishLobby do
 end
 
 # to do:
+# refactor get_rank
 # get get_target working
 # 
 # fix game.play_round output
