@@ -1,6 +1,7 @@
 require 'socket'
 require_relative 'go_fish_game'
 require_relative 'player'
+require_relative 'go_fish_lobby'
 
 class GoFishSocketServer
   attr_accessor :server, :games, :clients, :players, :lobby
@@ -19,7 +20,7 @@ class GoFishSocketServer
     clients << client
     client.puts 'Welcome to Go Fish! Waiting for players to join...'
   rescue IO::WaitReadable, Errno::EINTR
-    puts 'No client to accept'
+    # puts 'No client to accept'
   end
 
   def create_game_if_possible
@@ -29,6 +30,7 @@ class GoFishSocketServer
       games << game
       players_clients = players_to_clients
       self.lobby = GoFishLobby.new(game, players_clients)
+      puts "Creating game..."
     end
   end
 
@@ -38,6 +40,13 @@ class GoFishSocketServer
       player_client[player] = clients[i]
     end
     player_client
+  end
+
+  def run_game(lobby)
+    puts 'running game...'
+    loop do
+    lobby.play_round
+    end
   end
 
   def start

@@ -87,7 +87,7 @@ class GoFishGame
 
   def find_player(player_name) # to add in the runner class
     players.find do |player|
-      player.name.downcase == player_name
+      player.name.downcase == player_name.downcase
     end
   end
 end
